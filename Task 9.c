@@ -1,35 +1,47 @@
-#include <stdio.h>
+#include "stdlib.h"
+#include "stdio.h"
 
-int minSteps(int x, int y) {
-    if (x == y) { // If x and y are the same, no step is required
-        return 0;
-    } else if (y - x == 1) { //If the difference between x and y is 1, one step is required
+int main(){
+    //Declaring and initializing parameters
+    int num1, num2, temp, temp2,  count = 0, steps = 0;
+    //Input of variables by the user
+    printf("Enter two numbers (number 2 > number 1):\n");
+    scanf("%d %d", &num1, &num2);
+    //verification of an admissible condition
+    if (num2 < num1){
+        printf("Incorrect data!\n");
+        system("pause");
         return 1;
-    } else if (y - x < 3) { // If the difference between x and y is less than or equal to 3, two steps are required
-        return 2;
-    } else if (y - x == 3) { // If the difference between x and y is less than or equal to 3, three steps are required
-        return 3;
     } else {
-        int a = (y - x - 2) / 2; // Number of 2-step transitions
-        int b = (y - x - 2) % 2; // The balance if it is not possible to make a full 2-step transition
-        return 2 + a + b;
+        //step count with corresponding user data
+        temp = (num2 + num1)/2;
+        temp2 = num1;
+        for (int i = 1; temp > temp2; ++i, ++count) {
+            temp2 += i;
+        }
+        temp2 = num1;
+        //First half
+        temp = count;
+        printf("%d ", temp2);
+        for (int i = 1 ;temp > 0 ;++i, --temp) {
+            temp2 += i;
+            steps++;
+            printf("%d ", temp2);
+        }
+        //If sum of number 1 and number 2 isn't odd - we need to delete one step
+        if ((num1+num2)%2 != 0){
+            count--;
+        }
+        //Second half
+        for (;count > 0 ; --count) {
+            temp2 += count;
+            steps++;
+            printf("%d ", temp2);
+        }
+
+        //Output of results
+        printf("\nSteps: %d\n", steps);
+        system("pause");
+        return 0;
     }
-}
-
-int main() {
-    int x, y;
-    printf("Enter the value of x: ");
-    scanf("%d", &x);
-    printf("Enter the value of y: ");
-    scanf("%d", &y);
-
-    if (x < 0 || x >= 2147483648 || y < 0 || y >= 2147483648 || x > y) {
-        printf("Invalid x and y values.\n");
-        return 1;
-    }
-
-    int steps = minSteps(x, y);
-    printf("Minimum number of steps: %d\n", steps);
-
-    return 0;
 }
